@@ -3,8 +3,6 @@ package com.death.paper.activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +36,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     Dialog dialog;
-    private static final String TAG = MainActivity.class.getSimpleName();
     private final static String API_KEY = "44283b117d784997a4edd8875c900f5d";
     private RecyclerView sourceList, newsArticle;
     SourceAdapter adapter;
@@ -64,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         toolbar.inflateMenu(R.menu.view_switcher);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Sources>() {
             @Override
             public void onResponse(@NonNull Call<Sources> call, @NonNull Response<Sources> response) {
-                if (null != response.body().getSources() || response.body().getSources().size() > 0) {
+                if (null != response.body().getSources() && response.body().getSources().size() > 0) {
                     List<Source> sources = response.body().getSources();
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                     adapter = new SourceAdapter(MainActivity.this, sources);
@@ -90,11 +85,26 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Sources> call, Throwable t) {
+            public void onFailure(@NonNull Call<Sources> call, @NonNull Throwable t) {
             }
+
         });
 
         sourceList.addOnItemTouchListener(new SourceAdapter.RecyclerTouchListener(this, sourceList, new SourceAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Tapped:" + adapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
+                getNewsFromSource(adapter.getItem(position).getId());
+                toolbar.setTitle(adapter.getItem(position).getName());
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+        newsArticle.addOnItemTouchListener(new ArticleAdapter.RecyclerTouchListener(this, newsArticle, new ArticleAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "Tapped:" + adapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
@@ -115,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         newsCall.enqueue(new Callback<News>() {
             @Override
             public void onResponse(@NonNull Call<News> call, @NonNull Response<News> response) {
-                if (null != response.body().getArticles() || response.body().getArticles().size() > 0) {
+                if (null != response.body().getArticles() && response.body().getArticles().size() > 0) {
                     List<Articles> news = response.body().getArticles();
                     gridLayoutManager.setSpanCount(gridLayoutManager.getSpanCount());
                     articleAdapter = new ArticleAdapter(MainActivity.this, news);
