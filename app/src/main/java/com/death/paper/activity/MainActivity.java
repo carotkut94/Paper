@@ -1,6 +1,7 @@
 package com.death.paper.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -119,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "Tapped:" + articleAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, NewsArticle.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(SimpleActivityA.this,
+                                imageView,
+                                ViewCompat.getTransitionName(imageView));
+                startActivity(intent, options.toBundle());
             }
 
             @Override
@@ -198,5 +205,14 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.navigation_search);
         searchView.setMenuItem(item);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(searchView.isSearchOpen()){
+            searchView.closeSearch();
+        }else {
+            super.onBackPressed();
+        }
     }
 }
