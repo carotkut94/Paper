@@ -2,30 +2,36 @@ package com.death.paper.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.death.paper.R;
 import com.death.paper.model.Source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by rajora_sd on 21-09-2017.
  */
 
-public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHolder>  {
+public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHolder> implements Filterable {
 
     private List<Source> sources;
+    private List<Source> sourcesFiltered;
     private Context mContext;
 
     public SourceAdapter(Context context, List<Source> models) {
         mContext = context;
         this.sources = models;
+        this.sourcesFiltered = models;
     }
 
 
@@ -50,6 +56,41 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return sources.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return  new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                Log.e("QUERY ADAPTER", charString);
+                if (charString.isEmpty()) {
+                    sources = sourcesFiltered ;
+                } else {
+                    List<Source> filteredList = new ArrayList<>();
+                    for (Source roster : sourcesFiltered) {
+                        Log.e("NAME", roster.getName());
+                        if (roster.getName().toLowerCase().contains(charString.toLowerCase()) || roster.getUrl().contains(charString)) {
+                            filteredList.add(roster);
+                            Log.e("MATCH FOUND", ""+true);
+                        }
+
+                        Log.e("MATCH FOUND", ""+false);
+                    }
+                    sources = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = sources;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                sources = (ArrayList<Source>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder

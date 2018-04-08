@@ -118,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
         newsArticle.addOnItemTouchListener(new ArticleAdapter.RecyclerTouchListener(this, newsArticle, new ArticleAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Tapped:" + adapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
-                getNewsFromSource(adapter.getItem(position).getId());
-                toolbar.setTitle(adapter.getItem(position).getName());
+                Toast.makeText(MainActivity.this, "Tapped:" + articleAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -128,6 +126,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }));
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
     private void getNewsFromSource(String source) {
