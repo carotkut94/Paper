@@ -33,7 +33,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:indeterminate="true"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                />
         <WebView
+            android:layout_below="@+id/progress"
             android:background="#6affffff"
             android:id="@+id/news"
             android:layout_above="@+id/headline"

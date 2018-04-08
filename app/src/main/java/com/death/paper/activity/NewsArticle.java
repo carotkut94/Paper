@@ -8,10 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.death.paper.R;
@@ -24,6 +26,7 @@ public class NewsArticle extends AppCompatActivity {
     ImageView posterImage;
     TextView newsHeadline;
     WebView newsContent;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class NewsArticle extends AppCompatActivity {
         posterImage = findViewById(R.id.poster);
         newsHeadline = findViewById(R.id.headline);
         newsContent = findViewById(R.id.news);
+        progressBar = findViewById(R.id.progress);
 
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -91,6 +95,13 @@ public class NewsArticle extends AppCompatActivity {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            // TODO Auto-generated method stub
+            super.onPageFinished(view, url);
+            progressBar.setVisibility(View.GONE);
         }
     }
 }
