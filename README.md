@@ -14,3 +14,5 @@ retrofit, gson, google palette api, picasso and modern animation using Lottie fr
 ![alt text](https://github.com/carotkut94/Paper/blob/master/arts/hacker_news.png "Hackernews")
 
 ![alt text](https://github.com/carotkut94/Paper/blob/master/arts/news_in_grid.png "Hackernews Grid")
+
+![alt text](https://github.com/carotkut94/Paper/blob/master/arts/complete_news.png "Hackernews Grid")
