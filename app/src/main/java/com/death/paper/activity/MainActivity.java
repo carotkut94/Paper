@@ -108,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
         sourceList.addOnItemTouchListener(new SourceAdapter.RecyclerTouchListener(this, sourceList, new SourceAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Tapped:" + adapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
-                getNewsFromSource(adapter.getItem(position).getId());
+               getNewsFromSource(adapter.getItem(position).getId());
                 toolbar.setTitle(adapter.getItem(position).getName());
             }
 
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         newsArticle.addOnItemTouchListener(new ArticleAdapter.RecyclerTouchListener(this, newsArticle, new ArticleAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Tapped:" + articleAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, NewsArticle.class);
                 intent.putExtra("data", articleAdapter.getItem(position));
                 Pair photoSharedElement = Pair.create(newsArticle.getChildAt(position).findViewById(R.id.poster), ViewCompat.getTransitionName(newsArticle.getChildAt(position).findViewById(R.id.poster)));
