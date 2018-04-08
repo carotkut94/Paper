@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,10 +124,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "Tapped:" + articleAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, NewsArticle.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(SimpleActivityA.this,
-                                imageView,
-                                ViewCompat.getTransitionName(imageView));
+                intent.putExtra("data", articleAdapter.getItem(position));
+                Pair photoSharedElement = Pair.create(newsArticle.getChildAt(position).findViewById(R.id.poster), ViewCompat.getTransitionName(newsArticle.getChildAt(position).findViewById(R.id.poster)));
+                Pair titleSharedElement = Pair.create(newsArticle.getChildAt(position).findViewById(R.id.newsHeadline), ViewCompat.getTransitionName(newsArticle.getChildAt(position).findViewById(R.id.newsHeadline)));
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, photoSharedElement, titleSharedElement);
+
                 startActivity(intent, options.toBundle());
             }
 

@@ -5,6 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.NewsArticle">
-    
+
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:drawingCacheQuality="high"
+        android:transitionName="simple_activity_transition"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@drawable/custom_gradient"
+        android:layout_height="match_parent"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="#6affffff"
+        android:layout_width="match_parent"
+        android:elevation="6dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <WebView
+            android:background="#6affffff"
+            android:id="@+id/news"
+            android:layout_above="@+id/headline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+
+            android:id="@+id/headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="fill_horizontal"
+            android:maxLines="5"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:transitionName="footer_title" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
 
 </RelativeLayout>

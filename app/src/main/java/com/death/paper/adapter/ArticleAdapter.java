@@ -48,7 +48,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
 
         final Articles article = articles.get(position);
-        holder.adText.setText(article.getTitle());
+        holder.newsHeadline.setText(article.getTitle());
         Picasso.with(mContext)
                 .load(article.getUrlToImage())
                 .into(holder.posterImage, new com.squareup.picasso.Callback() {
@@ -60,8 +60,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
                             @Override
                             public void onGenerated(Palette palette) {
                                 int color = palette.getDominantColor(ContextCompat.getColor(mContext, android.R.color.black));
-                                holder.adText.setBackgroundColor(color);
-                                holder.adText.setTextColor(getComplimentColor(color));
+                                holder.newsHeadline.setBackgroundColor(color);
+                                holder.newsHeadline.setTextColor(getComplimentColor(color));
                             }
                         });
                     }
@@ -83,12 +83,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView adText;
+        TextView newsHeadline;
         ImageView posterImage;
 
         MyViewHolder(View itemView) {
             super(itemView);
-            adText = itemView.findViewById(R.id.newsHeadline);
+            newsHeadline = itemView.findViewById(R.id.newsHeadline);
             posterImage = itemView.findViewById(R.id.poster);
         }
     }

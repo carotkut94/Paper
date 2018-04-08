@@ -1,10 +1,13 @@
 package com.death.paper.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Awesome Pojo Generator
  * */
-public class Articles{
+public class Articles implements Serializable{
   @SerializedName("publishedAt")
   @Expose
   private String publishedAt;
