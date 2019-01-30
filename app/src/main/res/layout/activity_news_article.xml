@@ -19,7 +19,7 @@
         android:background="@drawable/custom_gradient"
         android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="#6affffff"
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
             android:transitionName="footer_title" />
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 

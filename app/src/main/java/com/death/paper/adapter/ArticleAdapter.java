@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,7 +49,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         final Articles article = articles.get(position);
         holder.newsHeadline.setText(article.getTitle());
-        Picasso.with(mContext)
+        Picasso.get()
                 .load(article.getUrlToImage())
                 .into(holder.posterImage, new com.squareup.picasso.Callback() {
                     @Override
@@ -67,7 +67,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(Exception e) {
 
                     }
                 });

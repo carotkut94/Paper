@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
+import androidx.palette.graphics.Palette;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
@@ -46,7 +46,7 @@ public class NewsArticle extends AppCompatActivity {
 
         Articles articles = (Articles) getIntent().getSerializableExtra("data");
 
-        Picasso.with(this).load(articles.getUrlToImage()).into(posterImage, new Callback() {
+        Picasso.get().load(articles.getUrlToImage()).into(posterImage, new Callback() {
             @Override
             public void onSuccess() {
                 BitmapDrawable drawable = (BitmapDrawable) posterImage.getDrawable();
@@ -62,10 +62,12 @@ public class NewsArticle extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
-            public void onError() {
+            public void onError(Exception e) {
 
             }
+
         });
         newsHeadline.setText(articles.getTitle());
 
