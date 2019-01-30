@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rajora_sd on 21-09-2017.
+ * Created by deathcode on 21-09-2017.
  */
 
 public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHolder> implements Filterable {
@@ -64,19 +64,14 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charString = constraint.toString();
-                Log.e("QUERY ADAPTER", charString);
                 if (charString.isEmpty()) {
                     sources = sourcesFiltered ;
                 } else {
                     List<Source> filteredList = new ArrayList<>();
-                    for (Source roster : sourcesFiltered) {
-                        Log.e("NAME", roster.getName());
-                        if (roster.getName().toLowerCase().contains(charString.toLowerCase()) || roster.getUrl().contains(charString)) {
-                            filteredList.add(roster);
-                            Log.e("MATCH FOUND", ""+true);
+                    for (Source source : sourcesFiltered) {
+                        if (source.getName().toLowerCase().contains(charString.toLowerCase()) || source.getUrl().contains(charString)) {
+                            filteredList.add(source);
                         }
-
-                        Log.e("MATCH FOUND", ""+false);
                     }
                     sources = filteredList;
                 }

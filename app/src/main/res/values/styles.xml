@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 
@@ -15,6 +16,7 @@
         <!-- Change clear text icon -->
         <item name="searchCloseIcon">@drawable/ic_close_black_24dp</item>
         <!-- Change up icon -->
+        <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="searchBackIcon">@drawable/ic_arrow_back_black_24dp</item>
         <!-- Change text color for edit text. This will also be the color of the cursor -->
         <item name="android:textColor">@color/colorPrimaryDark</item>

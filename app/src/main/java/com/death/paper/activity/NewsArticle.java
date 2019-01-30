@@ -3,11 +3,7 @@ package com.death.paper.activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.palette.graphics.Palette;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
@@ -21,12 +17,17 @@ import com.death.paper.model.Articles;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
+
 public class NewsArticle extends AppCompatActivity {
 
     ImageView posterImage;
     TextView newsHeadline;
     WebView newsContent;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +37,8 @@ public class NewsArticle extends AppCompatActivity {
         newsContent = findViewById(R.id.news);
         progressBar = findViewById(R.id.progress);
 
-
-        if (Build.VERSION.SDK_INT >= 21) {
-
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
 
         Articles articles = (Articles) getIntent().getSerializableExtra("data");
