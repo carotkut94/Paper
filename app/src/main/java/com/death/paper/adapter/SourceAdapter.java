@@ -1,6 +1,9 @@
 package com.death.paper.adapter;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -13,6 +16,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.death.paper.R;
+import com.death.paper.databinding.CardNewsPaperBinding;
 import com.death.paper.model.Source;
 
 import java.util.ArrayList;
@@ -26,28 +30,23 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
 
     private List<Source> sources;
     private List<Source> sourcesFiltered;
-    private Context mContext;
 
-    public SourceAdapter(Context context, List<Source> models) {
-        mContext = context;
+    public SourceAdapter(List<Source> models) {
         this.sources = models;
         this.sourcesFiltered = models;
     }
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_news_paper, parent, false);
-        return new MyViewHolder(itemView);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CardNewsPaperBinding cardNewsPaperBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.card_news_paper,parent, false);
+        return new MyViewHolder(cardNewsPaperBinding);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-
-
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Source source = sources.get(position);
-        holder.adText.setText(source.getName());
+        holder.bindSource(source);
     }
     public Source getItem(int position) {
         return sources.get(position);
@@ -90,10 +89,16 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
-        Button adText;
-        MyViewHolder(View itemView) {
-            super(itemView);
-            adText = (Button) itemView.findViewById(R.id.newspapername);
+        CardNewsPaperBinding cardNewsPaperBinding;
+        MyViewHolder(CardNewsPaperBinding itemView) {
+            super(itemView.getRoot());
+            cardNewsPaperBinding = itemView;
+
+        }
+
+        public void bindSource(Source source){
+            cardNewsPaperBinding.newspapername.setText(source.getName());
+            cardNewsPaperBinding.executePendingBindings();
         }
     }
 
@@ -129,7 +134,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
 
 
         @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
             View child = rv.findChildViewUnder(e.getX(), e.getY());
             if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
@@ -139,7 +144,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.MyViewHold
         }
 
         @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
         }
 
         @Override

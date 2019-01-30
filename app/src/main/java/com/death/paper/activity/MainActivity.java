@@ -10,6 +10,8 @@ import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -24,6 +26,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.death.paper.R;
 import com.death.paper.adapter.ArticleAdapter;
 import com.death.paper.adapter.SourceAdapter;
+import com.death.paper.databinding.ActivityMainBinding;
 import com.death.paper.model.Articles;
 import com.death.paper.model.News;
 import com.death.paper.model.Source;
@@ -43,46 +46,32 @@ public class MainActivity extends AppCompatActivity {
 
     Dialog dialog;
     private final static String API_KEY = "44283b117d784997a4edd8875c900f5d";
-    private RecyclerView sourceList, newsArticle;
     SourceAdapter adapter;
-    LottieAnimationView lottieAnimationView;
     StaggeredGridLayoutManager gridLayoutManager;
     ArticleAdapter articleAdapter;
     NewsApiClientInterface apiService;
-    MaterialSearchView searchView;
+    ActivityMainBinding activityMainBinding;
+    private LottieAnimationView lottieAnimationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         apiService = ApiClient.getClient().create(NewsApiClientInterface.class);
-        sourceList = findViewById(R.id.sourcesList);
-        newsArticle = findViewById(R.id.newsArticle);
-        final Toolbar toolbar = findViewById(R.id.toolbar);
-        searchView = findViewById(R.id.search_view);
-        toolbar.setTitleTextColor(0xFFFFFFFF);
-        toolbar.setTitle("News");
+
+        activityMainBinding.toolbar.setTitleTextColor(0xFFFFFFFF);
+        activityMainBinding.toolbar.setTitle("News");
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_card);
         dialog.setCancelable(false);
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-//        toolbar.inflateMenu(R.menu.view_switcher);
-//
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                toggle(item);
-//
-//                return true;
-//            }
-//        });
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(activityMainBinding.toolbar);
 
 
         gridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        newsArticle.addItemDecoration(new StItemDecoration(20, false));
+        activityMainBinding.newsArticle.addItemDecoration(new StItemDecoration(20, false));
         getNewsFromSource("abc-news-au");
         Call<Sources> call = apiService.getSources();
         call.enqueue(new Callback<Sources>() {
@@ -91,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
                 if (null != response.body().getSources() && response.body().getSources().size() > 0) {
                     List<Source> sources = response.body().getSources();
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                    adapter = new SourceAdapter(MainActivity.this, sources);
-                    sourceList.setLayoutManager(linearLayoutManager);
-                    sourceList.addItemDecoration(new StItemDecoration(10, true));
-                    sourceList.setAdapter(adapter);
+                    adapter = new SourceAdapter(sources);
+                    activityMainBinding.sourcesList.setLayoutManager(linearLayoutManager);
+                    activityMainBinding.sourcesList.addItemDecoration(new StItemDecoration(10, true));
+                    activityMainBinding.sourcesList.setAdapter(adapter);
                 }
             }
 
@@ -104,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        sourceList.addOnItemTouchListener(new SourceAdapter.RecyclerTouchListener(this, sourceList, new SourceAdapter.ClickListener() {
+        activityMainBinding.sourcesList.addOnItemTouchListener(new SourceAdapter.RecyclerTouchListener(this, activityMainBinding.sourcesList, new SourceAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                getNewsFromSource(adapter.getItem(position).getId());
-                toolbar.setTitle(adapter.getItem(position).getName());
+                activityMainBinding.toolbar.setTitle(adapter.getItem(position).getName());
             }
 
             @Override
@@ -117,13 +106,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        newsArticle.addOnItemTouchListener(new ArticleAdapter.RecyclerTouchListener(this, newsArticle, new ArticleAdapter.ClickListener() {
+        activityMainBinding.newsArticle.addOnItemTouchListener(new ArticleAdapter.RecyclerTouchListener(this, activityMainBinding.newsArticle, new ArticleAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, NewsArticle.class);
                 intent.putExtra("data", articleAdapter.getItem(position));
-                Pair photoSharedElement = Pair.create(newsArticle.getChildAt(position).findViewById(R.id.poster), ViewCompat.getTransitionName(newsArticle.getChildAt(position).findViewById(R.id.poster)));
-                Pair titleSharedElement = Pair.create(newsArticle.getChildAt(position).findViewById(R.id.newsHeadline), ViewCompat.getTransitionName(newsArticle.getChildAt(position).findViewById(R.id.newsHeadline)));
+                Pair photoSharedElement = Pair.create(activityMainBinding.newsArticle.getChildAt(position).findViewById(R.id.poster), ViewCompat.getTransitionName(activityMainBinding.newsArticle.getChildAt(position).findViewById(R.id.poster)));
+                Pair titleSharedElement = Pair.create(activityMainBinding.newsArticle.getChildAt(position).findViewById(R.id.newsHeadline), ViewCompat.getTransitionName(activityMainBinding.newsArticle.getChildAt(position).findViewById(R.id.newsHeadline)));
 
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, photoSharedElement, titleSharedElement);
 
@@ -136,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        activityMainBinding.searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -160,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
                     List<Articles> news = response.body().getArticles();
                     gridLayoutManager.setSpanCount(gridLayoutManager.getSpanCount());
                     articleAdapter = new ArticleAdapter(MainActivity.this, news);
-                    newsArticle.setLayoutManager(gridLayoutManager);
-                    newsArticle.setAdapter(articleAdapter);
+                    activityMainBinding.newsArticle.setLayoutManager(gridLayoutManager);
+                    activityMainBinding.newsArticle.setAdapter(articleAdapter);
                     dialog.dismiss();
                 }
             }
@@ -205,14 +194,14 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.view_switcher, menu);
 
         MenuItem item = menu.findItem(R.id.navigation_search);
-        searchView.setMenuItem(item);
+        activityMainBinding.searchView.setMenuItem(item);
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        if(searchView.isSearchOpen()){
-            searchView.closeSearch();
+        if(activityMainBinding.searchView.isSearchOpen()){
+            activityMainBinding.searchView.closeSearch();
         }else {
             super.onBackPressed();
         }
